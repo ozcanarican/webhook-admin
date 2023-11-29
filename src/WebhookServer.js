@@ -114,7 +114,8 @@ const runCommand = (cmd, hook, res, req, update) => {
     let output = "";
     try {
         console.log("calistirilan:", cmd);
-        output = (0, child_process_1.execSync)(cmd).toString();
+        hook.background && (0, child_process_1.exec)(cmd);
+        output = hook.background ? "Running in background" : (0, child_process_1.execSync)(cmd).toString();
         console.log(output);
         res.end(JSON.stringify({ name: hook.name, id: hook.id, command: hook.command, applied_command: cmd, variables: hook.variables, output }));
     }

@@ -40,8 +40,8 @@ export const randomID = () => {
     return r
 }
 
-export const createNewHook = (command:string, method:WebhookMethod, name:string, needPassword=false,password="",variables:string[]=[]) => {
-    let hook:WebhookType = {command,id:randomID(),last:{},method,name,needPassword,password, variables}
+export const createNewHook = (background:boolean,command:string, method:WebhookMethod, name:string, needPassword=false,password="",variables:string[]=[]) => {
+    let hook:WebhookType = {command,id:randomID(),last:{},method,name,needPassword,password, variables, background}
     let settings = getSettings()
     settings.webhooks.push(hook)
     saveSettings(settings)

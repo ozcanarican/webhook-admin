@@ -5,6 +5,7 @@ export type WebhookType = {
     id:string,
     command:string,
     variables:string[],
+    background:boolean,
     last: {
         date?:Date,
         ip?:string,

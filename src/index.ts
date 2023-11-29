@@ -72,9 +72,6 @@ const createWindow = (width: number, height: number) => {
     width,
     height,
     autoHideMenuBar: true,
-    resizable: false,
-    minimizable: false,
-    maximizable: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true
@@ -118,9 +115,7 @@ const message = (msg: string) => {
 
 const backToHook = () => {
   windowHooks!.loadFile(path.join(__dirname, 'ui/ScreenHooks.html'));
-  windowHooks!.setResizable(true)
-  windowHooks!.setSize(550, 600, true)
-  windowHooks!.setResizable(false)
+  windowHooks!.setSize(550, 630, true)
 }
 
 
@@ -157,7 +152,7 @@ app.on('ready', () => {
     let cmd = data.command as string
     let reg = /\$\w*/g
     let variables = (cmd.match(reg) || []).map(e => e.replace("$", ""))
-    let hook: WebhookType = { ...data, variables: variables ? variables : [], needPassword: data.needPassword == "on" ? true : false, last: {}, method: WebhookMethod[data.method] }
+    let hook: WebhookType = { ...data, variables: variables ? variables : [], background: data.background == "on" ? true : false, needPassword: data.needPassword == "on" ? true : false, last: {}, method: WebhookMethod[data.method] }
     console.log(hook)
     updateHook(hook)
     backToHook()
@@ -191,12 +186,12 @@ app.on('ready', () => {
 
   ipcMain.handle('hooks', async (event, ...args) => {
     if (windowHooks) {
-      windowHooks.maximize()
+      windowHooks.restore()
       windowHooks.moveTop()
       windowHooks.focus()
       return
     }
-    windowHooks = createWindow(550, 600)
+    windowHooks = createWindow(550, 630)
     windowHooks.loadFile(path.join(__dirname, 'ui/ScreenHooks.html'));
     windowHooks.on("close", () => { windowHooks = null })
   })
@@ -207,15 +202,13 @@ app.on('ready', () => {
 
   ipcMain.handle('new-hook', async (event, ...args) => {
     windowHooks!.loadFile(path.join(__dirname, 'ui/ScreenNewHook.html'));
-    windowHooks!.setResizable(true)
-    windowHooks!.setSize(windowHooks!.getSize()[0], 450, true)
-    windowHooks!.setResizable(false)
+    windowHooks!.setSize(windowHooks!.getSize()[0], 500, true)
   })
 
   ipcMain.handle('go-update', async (event, id) => {
     windowHooks!.loadFile(path.join(__dirname, 'ui/ScreenNewHook.html'));
     windowHooks!.setResizable(true)
-    windowHooks!.setSize(windowHooks!.getSize()[0], 450, true)
+    windowHooks!.setSize(windowHooks!.getSize()[0], 500, true)
     windowHooks!.setResizable(false)
     let settings = getSettings()
     let hook = {}

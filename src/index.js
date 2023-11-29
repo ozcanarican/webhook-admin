@@ -94,9 +94,6 @@ const createWindow = (width, height) => {
         width,
         height,
         autoHideMenuBar: true,
-        resizable: false,
-        minimizable: false,
-        maximizable: false,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: true
@@ -137,9 +134,7 @@ const message = (msg) => {
 };
 const backToHook = () => {
     windowHooks.loadFile(path.join(__dirname, 'ui/ScreenHooks.html'));
-    windowHooks.setResizable(true);
-    windowHooks.setSize(550, 600, true);
-    windowHooks.setResizable(false);
+    windowHooks.setSize(550, 630, true);
 };
 electron_1.app.on('ready', () => {
     setTimeout(() => {
@@ -170,7 +165,7 @@ electron_1.app.on('ready', () => {
         let cmd = data.command;
         let reg = /\$\w*/g;
         let variables = (cmd.match(reg) || []).map(e => e.replace("$", ""));
-        let hook = Object.assign(Object.assign({}, data), { variables: variables ? variables : [], needPassword: data.needPassword == "on" ? true : false, last: {}, method: WebhookType_1.WebhookMethod[data.method] });
+        let hook = Object.assign(Object.assign({}, data), { variables: variables ? variables : [], background: data.background == "on" ? true : false, needPassword: data.needPassword == "on" ? true : false, last: {}, method: WebhookType_1.WebhookMethod[data.method] });
         console.log(hook);
         (0, Util_1.updateHook)(hook);
         backToHook();
@@ -198,12 +193,12 @@ electron_1.app.on('ready', () => {
     }));
     electron_1.ipcMain.handle('hooks', (event, ...args) => __awaiter(void 0, void 0, void 0, function* () {
         if (windowHooks) {
-            windowHooks.maximize();
+            windowHooks.restore();
             windowHooks.moveTop();
             windowHooks.focus();
             return;
         }
-        windowHooks = createWindow(550, 600);
+        windowHooks = createWindow(550, 630);
         windowHooks.loadFile(path.join(__dirname, 'ui/ScreenHooks.html'));
         windowHooks.on("close", () => { windowHooks = null; });
     }));
@@ -212,14 +207,12 @@ electron_1.app.on('ready', () => {
     }));
     electron_1.ipcMain.handle('new-hook', (event, ...args) => __awaiter(void 0, void 0, void 0, function* () {
         windowHooks.loadFile(path.join(__dirname, 'ui/ScreenNewHook.html'));
-        windowHooks.setResizable(true);
-        windowHooks.setSize(windowHooks.getSize()[0], 450, true);
-        windowHooks.setResizable(false);
+        windowHooks.setSize(windowHooks.getSize()[0], 500, true);
     }));
     electron_1.ipcMain.handle('go-update', (event, id) => __awaiter(void 0, void 0, void 0, function* () {
         windowHooks.loadFile(path.join(__dirname, 'ui/ScreenNewHook.html'));
         windowHooks.setResizable(true);
-        windowHooks.setSize(windowHooks.getSize()[0], 450, true);
+        windowHooks.setSize(windowHooks.getSize()[0], 500, true);
         windowHooks.setResizable(false);
         let settings = (0, Util_1.getSettings)();
         let hook = {};

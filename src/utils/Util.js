@@ -38,8 +38,8 @@ const randomID = () => {
     return r;
 };
 exports.randomID = randomID;
-const createNewHook = (command, method, name, needPassword = false, password = "", variables = []) => {
-    let hook = { command, id: (0, exports.randomID)(), last: {}, method, name, needPassword, password, variables };
+const createNewHook = (background, command, method, name, needPassword = false, password = "", variables = []) => {
+    let hook = { command, id: (0, exports.randomID)(), last: {}, method, name, needPassword, password, variables, background };
     let settings = (0, exports.getSettings)();
     settings.webhooks.push(hook);
     (0, exports.saveSettings)(settings);

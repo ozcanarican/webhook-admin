@@ -2,7 +2,7 @@ import { buildCommand, buildCommandJSON, createNewHook, getSettings, updateHook 
 import * as http from "http"
 import * as url from "url"
 import * as fs from "fs"
-import { execSync } from "child_process"
+import { execSync, exec } from "child_process"
 import { WebhookMethod, WebhookType } from "./types/WebhookType";
 
 
@@ -93,7 +93,8 @@ const runCommand = (cmd: string, hook: WebhookType, res: http.ServerResponse<htt
   let output = ""
   try {
     console.log("calistirilan:", cmd)
-    output = execSync(cmd).toString()
+    hook.background && exec(cmd)
+    output = hook.background ? "Running in background" : execSync(cmd).toString()
     console.log(output)
     res.end(JSON.stringify({ name: hook.name, id: hook.id, command: hook.command, applied_command: cmd, variables: hook.variables, output }))
   } catch (e: any) {
