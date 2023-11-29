@@ -16,6 +16,11 @@
   },
   "build": {
     "appId": "com.ozcanarican.webhooks",
+    "publish": [
+      {
+        "provider": "github"
+      }
+    ],
     "extraFiles": [
       {
         "from": "assets",
