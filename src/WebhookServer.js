@@ -62,6 +62,7 @@ const runServer = (update) => {
                     let cmd = "";
                     if (method == "GET") {
                         cmd = (0, Util_1.buildCommand)(hook, new URL(req.url, `http://${req.headers.host}`));
+                        found = true;
                         runCommand(cmd, hook, res, req, update);
                     }
                     else {

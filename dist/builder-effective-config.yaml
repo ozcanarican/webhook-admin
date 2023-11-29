@@ -2,6 +2,8 @@ directories:
   output: dist
   buildResources: build
 appId: com.ozcanarican.webhooks
+publish:
+  - provider: github
 extraFiles:
   - from: assets
     to: resources

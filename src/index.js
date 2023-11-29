@@ -44,10 +44,7 @@ const WebhookType_1 = require("./types/WebhookType");
 const electron_updater_1 = require("electron-updater");
 const electron_is_dev_1 = __importDefault(require("electron-is-dev"));
 if (electron_is_dev_1.default) {
-    (0, electron_reload_1.default)(__dirname, {
-        electron: path.join(__dirname.replace("/src", ""), 'node_modules', '.bin', 'electron'),
-        hardResetMethod: 'exit'
-    });
+    (0, electron_reload_1.default)("", {});
 }
 electron_updater_1.autoUpdater.setFeedURL({
     provider: 'github',
@@ -64,7 +61,7 @@ if (require('electron-squirrel-startup')) {
 const createMain = () => {
     mainWindow = new electron_1.BrowserWindow({
         width: 500,
-        height: 330,
+        height: 390,
         autoHideMenuBar: true,
         resizable: false,
         maximizable: false,

@@ -9,10 +9,7 @@ import isDev from 'electron-is-dev'
 //var isDev = process.env.APP_DEV ? (process.env.APP_DEV.trim() == "true") : false;
 
 if (isDev) {
-  electronReload(__dirname, {
-    electron: path.join(__dirname.replace("/src", ""), 'node_modules', '.bin', 'electron'),
-    hardResetMethod: 'exit'
-  })
+  electronReload("",{})
 }
 
 autoUpdater.setFeedURL({
@@ -35,7 +32,7 @@ const createMain = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 500,
-    height: 330,
+    height: 390,
     autoHideMenuBar: true,
     resizable: false,
     maximizable: false,

@@ -41,6 +41,7 @@ export const runServer = (update: Function) => {
           let cmd = ""
           if (method == "GET") {
             cmd = buildCommand(hook, new URL(req.url!, `http://${req.headers.host}`))
+            found = true
             runCommand(cmd, hook, res, req, update)
           } else {
             found = true
