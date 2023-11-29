@@ -1,8 +1,8 @@
 version: 1.0.1
 files:
   - url: webhooks-admin.exe
-    sha512: 5pAUZwFGy8bSb4olieJV6Ypg1Gn0TGuyj1uUABJu7My2ik8/o8UoC+pMYFyBzpOl7WCchQE3iK6L+W0aMd7dwA==
-    size: 75212498
+    sha512: NrPNCW0e6UaDTHRhYJj0/d0UPm8ZeOYY2fZd2KWUHAC1gfE+qmAM8cNK+je0N9Mud4rDpK39JAsuRK1Zj/5iHQ==
+    size: 75213006
 path: webhooks-admin.exe
-sha512: 5pAUZwFGy8bSb4olieJV6Ypg1Gn0TGuyj1uUABJu7My2ik8/o8UoC+pMYFyBzpOl7WCchQE3iK6L+W0aMd7dwA==
-releaseDate: '2023-11-29T15:58:56.862Z'
+sha512: NrPNCW0e6UaDTHRhYJj0/d0UPm8ZeOYY2fZd2KWUHAC1gfE+qmAM8cNK+je0N9Mud4rDpK39JAsuRK1Zj/5iHQ==
+releaseDate: '2023-11-29T17:44:35.384Z'
