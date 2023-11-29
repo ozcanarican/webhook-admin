@@ -1,9 +1,9 @@
 version: 1.0.0
 files:
   - url: Webhooks-Admin-1.0.0.AppImage
-    sha512: hOwpMjbj2JlnYvPGE8fi4zpTScWmhWD10tQNk4U08HNWrjoENgNqy/TVu52Pr9I7aMSQO/3FoO6VcGpJTYFHrw==
-    size: 102735843
-    blockMapSize: 106487
+    sha512: A4SEwykP6N44AHRmMRuPYHp104EbEkTBl3wfcA5uhNvRMwq8TCUZ32RrK80mDDx6rxgG6c8PQY+3Ie3wurAoFw==
+    size: 102740003
+    blockMapSize: 106551
 path: Webhooks-Admin-1.0.0.AppImage
-sha512: hOwpMjbj2JlnYvPGE8fi4zpTScWmhWD10tQNk4U08HNWrjoENgNqy/TVu52Pr9I7aMSQO/3FoO6VcGpJTYFHrw==
-releaseDate: '2023-11-29T13:19:08.408Z'
+sha512: A4SEwykP6N44AHRmMRuPYHp104EbEkTBl3wfcA5uhNvRMwq8TCUZ32RrK80mDDx6rxgG6c8PQY+3Ie3wurAoFw==
+releaseDate: '2023-11-29T14:28:36.758Z'

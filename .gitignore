@@ -5,6 +5,7 @@ linux-unpacked
 *.AppImage*
 snap.key
 
+
 # Logs
 logs
 *.log
@@ -97,3 +98,4 @@ typings/
 
 # Electron-Forge
 out/
+.env.local
