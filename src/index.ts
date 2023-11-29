@@ -5,7 +5,8 @@ import { runServer } from './WebhookServer';
 import electronReload from 'electron-reload';
 import { WebhookMethod, WebhookType } from './types/WebhookType';
 import { autoUpdater } from "electron-updater"
-var isDev = process.env.APP_DEV ? (process.env.APP_DEV.trim() == "true") : false;
+import isDev from 'electron-is-dev'
+//var isDev = process.env.APP_DEV ? (process.env.APP_DEV.trim() == "true") : false;
 
 if (isDev) {
   electronReload(__dirname, {

@@ -42,8 +42,8 @@ const WebhookServer_1 = require("./WebhookServer");
 const electron_reload_1 = __importDefault(require("electron-reload"));
 const WebhookType_1 = require("./types/WebhookType");
 const electron_updater_1 = require("electron-updater");
-var isDev = process.env.APP_DEV ? (process.env.APP_DEV.trim() == "true") : false;
-if (isDev) {
+const electron_is_dev_1 = __importDefault(require("electron-is-dev"));
+if (electron_is_dev_1.default) {
     (0, electron_reload_1.default)(__dirname, {
         electron: path.join(__dirname.replace("/src", ""), 'node_modules', '.bin', 'electron'),
         hardResetMethod: 'exit'
@@ -81,7 +81,7 @@ const createMain = () => {
     mainWindow.on("close", () => {
         electron_1.app.quit();
     });
-    let imgPath = isDev ? "assets/icon.png" : path.join(process.resourcesPath, "icon.png");
+    let imgPath = electron_is_dev_1.default ? "assets/icon.png" : path.join(process.resourcesPath, "icon.png");
     tray = new electron_1.Tray(imgPath);
     const contextMenu = electron_1.Menu.buildFromTemplate([
         { label: 'Show Window', type: 'normal' },
