@@ -1,4 +1,4 @@
-const { DateTime } = luxon;
+var DateTime = luxon.DateTime;
 const getsettings = async () => {
   let settings = await window.api.send("get-settings")
   console.log("settings",settings)
@@ -10,18 +10,18 @@ const getsettings = async () => {
       lastDate = hook.last.date ? hook.last.date : null
     } else {
       if(hook.last) {
-        if(hook.last > lastDate) {
-          lastDate = hook.last
+        if(hook.last.date > lastDate) {
+          lastDate = hook.last.date
         }
       }
     }
   })
-  console.log(lastDate)
+  document.getElementById("server-url").innerHTML = `http://${settings.host}:${settings.servicePort}`
+  console.log("last:",lastDate)
   if(lastDate) {
-    last = DateTime.fromJSDate(lastDate).toFormat("dd.MM hh:mm")
+    console.log(DateTime.fromISO(lastDate).toFormat("hh:mm:ss dd.MM"))
+    document.getElementById("last-execution").innerHTML = DateTime.fromISO(lastDate).toFormat("hh:mm:ss dd.MM")
   }
-  console.log(last)
-  document.getElementById("last-execution").innerHTML = last
 }
 
 const getServerStatus = async () => {
@@ -47,7 +47,9 @@ getsettings()
 document.getElementById("start")?.addEventListener("click",()=>{setServerStatus(true)})
 document.getElementById("stop")?.addEventListener("click",()=>{setServerStatus(false)})
 document.getElementById("hooks")?.addEventListener("click",()=>{window.api.send("hooks")})
-
+document.getElementById("server-status")?.addEventListener("click",()=>{
+  api.send("openconfig")
+})
 window.api.receive("update", () => {
   getsettings()
 });

@@ -1,0 +1,11 @@
+directories:
+  output: dist
+  buildResources: build
+appId: com.ozcanarican.webhooks
+extraFiles: []
+productName: Webhooks Admin
+nsis:
+  artifactName: webhooks-admin.${ext}
+  uninstallDisplayName: Webhooks Admin
+files: []
+electronVersion: 27.1.2

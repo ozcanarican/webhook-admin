@@ -1,11 +1,15 @@
-import { app } from "electron";
+import { app,shell } from "electron";
 import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "original-fs";
 import { WebhookMethod, WebhookType } from "../types/WebhookType";
 import { SettingsType } from "../types/SettingsType";
 
 const path = require('path');
-const configPath = path.join(app.getPath('appData'), "Webhooks", "settings.json")
-export const mainFolder = path.join(app.getPath('appData'), "Webhooks")
+export const mainFolder = path.join(app.getPath('appData'), "Webhooks-Data")
+const configPath = path.join(mainFolder, "settings.json")
+
+export const openConfig = () => {
+    shell.openPath(mainFolder)
+}
 
 export const createDefaultSettings = () => {
     const defaultFile = require("./settings.json")
@@ -87,4 +91,15 @@ export const buildCommand = (hook:WebhookType, url:URL) => {
     console.log("build command:",cmd)
     return cmd
 }
+
+
+export const buildCommandJSON = (hook:WebhookType, data:any) => {
+    let cmd = hook.command
+    hook.variables.map((v)=>{
+        cmd = data[v] ? cmd.replace(`$${v}`,data[v]) : cmd.replace(`$${v}`,"")
+    })
+    console.log("build command:",cmd)
+    return cmd
+}
+
 

@@ -28,6 +28,7 @@ const Util_1 = require("./utils/Util");
 const http = __importStar(require("http"));
 const url = __importStar(require("url"));
 const child_process_1 = require("child_process");
+const WebhookType_1 = require("./types/WebhookType");
 const runServer = (update) => {
     let server = null;
     try {
@@ -42,30 +43,49 @@ const runServer = (update) => {
             let found = false;
             hooks.map((hook) => {
                 if (req.url.startsWith("/hook/" + hook.id)) {
+                    if (Object.values(WebhookType_1.WebhookMethod).includes(method)) {
+                        if (method != WebhookType_1.WebhookMethod[hook.method]) {
+                            res.statusCode = 500;
+                            res.end(JSON.stringify({ error: "INVALID_METHOD", description: `This webhook support ${WebhookType_1.WebhookMethod[hook.method]}` }));
+                            found = true;
+                            return;
+                        }
+                    }
+                    else {
+                        res.statusCode = 500;
+                        res.end(JSON.stringify({ error: "INVALID_METHOD", description: "Program doesnt support such method" }));
+                        found = true;
+                        return;
+                    }
                     res.statusCode = 200;
                     let params = url.parse(req.url, true).query;
                     let cmd = "";
                     if (method == "GET") {
                         cmd = (0, Util_1.buildCommand)(hook, new URL(req.url, `http://${req.headers.host}`));
+                        runCommand(cmd, hook, res, req, update);
                     }
-                    let output = "";
-                    try {
-                        output = (0, child_process_1.execSync)(cmd).toString();
-                        console.log(output);
-                        res.end(JSON.stringify({ name: hook.name, id: hook.id, command: hook.command, applied_command: cmd, variables: hook.variables, output }));
+                    else {
+                        found = true;
+                        var body = '';
+                        req.on('data', function (data) {
+                            body += data;
+                        });
+                        req.on('end', function () {
+                            if (body.length > 0) {
+                                try {
+                                    let datas = JSON.parse(body);
+                                    cmd = (0, Util_1.buildCommandJSON)(hook, datas);
+                                    runCommand(cmd, hook, res, req, update);
+                                }
+                                catch (_a) {
+                                    res.statusCode = 500;
+                                    res.end(JSON.stringify({ error: "INVALID_DATA", description: "Program couldnt parse your json data" }));
+                                    found = true;
+                                    return;
+                                }
+                            }
+                        });
                     }
-                    catch (e) {
-                        output = e.toString();
-                        res.end(JSON.stringify({ name: hook.name, id: hook.id, command: hook.command, applied_command: cmd, variables: hook.variables, error: true, error_msg: output }));
-                    }
-                    hook.last = {
-                        date: new Date(),
-                        ip: req.connection.remoteAddress,
-                        result: output
-                    };
-                    (0, Util_1.updateHook)(hook);
-                    update();
-                    found = true;
                 }
             });
             if (!found) {
@@ -89,3 +109,23 @@ const runServer = (update) => {
     return server;
 };
 exports.runServer = runServer;
+const runCommand = (cmd, hook, res, req, update) => {
+    let output = "";
+    try {
+        console.log("calistirilan:", cmd);
+        output = (0, child_process_1.execSync)(cmd).toString();
+        console.log(output);
+        res.end(JSON.stringify({ name: hook.name, id: hook.id, command: hook.command, applied_command: cmd, variables: hook.variables, output }));
+    }
+    catch (e) {
+        output = e.toString();
+        res.end(JSON.stringify({ name: hook.name, id: hook.id, command: hook.command, applied_command: cmd, variables: hook.variables, error: true, error_msg: output }));
+    }
+    hook.last = {
+        date: new Date(),
+        ip: req.connection.remoteAddress,
+        result: output
+    };
+    (0, Util_1.updateHook)(hook);
+    update();
+};

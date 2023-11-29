@@ -1,3 +1,9 @@
+win-unpacked
+linux-unpacked
+*.exe*
+*.snap*
+*.AppImage*
+
 # Logs
 logs
 *.log

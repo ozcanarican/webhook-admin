@@ -1,15 +1,18 @@
 import { app, BrowserWindow, clipboard, ipcMain, Menu, Tray } from 'electron'
-import { createNewHook, deleteHook, getSettings, mainFolder, randomID, saveHook, updateHook } from './utils/Util';
+import { createNewHook, deleteHook, getSettings, mainFolder, openConfig, randomID, saveHook, updateHook } from './utils/Util';
 import * as path from 'path';
 import { runServer } from './WebhookServer';
 import electronReload from 'electron-reload';
 import { WebhookMethod, WebhookType } from './types/WebhookType';
 import { autoUpdater } from "electron-updater"
+var isDev = process.env.APP_DEV ? (process.env.APP_DEV.trim() == "true") : false;
 
-electronReload(__dirname, {
-  electron: path.join(__dirname.replace("/src", ""), 'node_modules', '.bin', 'electron'),
-  hardResetMethod: 'exit'
-})
+if (isDev) {
+  electronReload(__dirname, {
+    electron: path.join(__dirname.replace("/src", ""), 'node_modules', '.bin', 'electron'),
+    hardResetMethod: 'exit'
+  })
+}
 
 autoUpdater.setFeedURL({
   provider: 'github',
@@ -31,7 +34,7 @@ const createMain = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 500,
-    height: 290,
+    height: 330,
     autoHideMenuBar: true,
     resizable: false,
     maximizable: false,
@@ -53,7 +56,8 @@ const createMain = () => {
   })
 
   //tray bar
-  tray = new Tray(path.join(mainFolder, 'webhook.png'))
+  let imgPath = isDev ? "assets/icon.png" : path.join(process.resourcesPath, "icon.png");
+  tray = new Tray(imgPath)
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Show Window', type: 'normal' },
   ])
@@ -89,6 +93,7 @@ const stopServer = () => {
   } catch (e) {
     console.log(e)
   }
+  update()
 }
 
 const restartServer = () => {
@@ -100,6 +105,7 @@ const restartServer = () => {
   } catch (e) {
     console.log(e)
   }
+  update()
 }
 
 const update = () => {
@@ -124,6 +130,12 @@ app.on('ready', () => {
   setTimeout(() => {
     autoUpdater.checkForUpdates()
   }, 5000)
+
+  ipcMain.handle("openconfig", async (event, data) => {
+    openConfig()
+    console.log("Conf açılıyor")
+  })
+
   ipcMain.handle("copytext", async (event, data) => {
     console.log("data")
     clipboard.writeText(data)

@@ -41,9 +41,19 @@ const path = __importStar(require("path"));
 const WebhookServer_1 = require("./WebhookServer");
 const electron_reload_1 = __importDefault(require("electron-reload"));
 const WebhookType_1 = require("./types/WebhookType");
-(0, electron_reload_1.default)(__dirname, {
-    electron: path.join(__dirname.replace("/src", ""), 'node_modules', '.bin', 'electron'),
-    hardResetMethod: 'exit'
+const electron_updater_1 = require("electron-updater");
+var isDev = process.env.APP_DEV ? (process.env.APP_DEV.trim() == "true") : false;
+if (isDev) {
+    (0, electron_reload_1.default)(__dirname, {
+        electron: path.join(__dirname.replace("/src", ""), 'node_modules', '.bin', 'electron'),
+        hardResetMethod: 'exit'
+    });
+}
+electron_updater_1.autoUpdater.setFeedURL({
+    provider: 'github',
+    repo: process.env.GITHUB_REPO,
+    owner: process.env.GITHUB_OWNER,
+    private: false,
 });
 let windowHooks = null;
 let mainWindow = null;
@@ -54,7 +64,7 @@ if (require('electron-squirrel-startup')) {
 const createMain = () => {
     mainWindow = new electron_1.BrowserWindow({
         width: 500,
-        height: 290,
+        height: 330,
         autoHideMenuBar: true,
         resizable: false,
         maximizable: false,
@@ -71,7 +81,8 @@ const createMain = () => {
     mainWindow.on("close", () => {
         electron_1.app.quit();
     });
-    tray = new electron_1.Tray(path.join(Util_1.mainFolder, 'webhook.png'));
+    let imgPath = isDev ? "assets/icon.png" : path.join(process.resourcesPath, "icon.png");
+    tray = new electron_1.Tray(imgPath);
     const contextMenu = electron_1.Menu.buildFromTemplate([
         { label: 'Show Window', type: 'normal' },
     ]);
@@ -105,6 +116,7 @@ const stopServer = () => {
     catch (e) {
         console.log(e);
     }
+    update();
 };
 const restartServer = () => {
     try {
@@ -116,6 +128,7 @@ const restartServer = () => {
     catch (e) {
         console.log(e);
     }
+    update();
 };
 const update = () => {
     windowHooks === null || windowHooks === void 0 ? void 0 : windowHooks.webContents.send("update");
@@ -132,6 +145,13 @@ const backToHook = () => {
     windowHooks.setResizable(false);
 };
 electron_1.app.on('ready', () => {
+    setTimeout(() => {
+        electron_updater_1.autoUpdater.checkForUpdates();
+    }, 5000);
+    electron_1.ipcMain.handle("openconfig", (event, data) => __awaiter(void 0, void 0, void 0, function* () {
+        (0, Util_1.openConfig)();
+        console.log("Conf açılıyor");
+    }));
     electron_1.ipcMain.handle("copytext", (event, data) => __awaiter(void 0, void 0, void 0, function* () {
         console.log("data");
         electron_1.clipboard.writeText(data);
@@ -233,6 +253,18 @@ electron_1.app.on('activate', () => {
     if (electron_1.BrowserWindow.getAllWindows().length === 0) {
         createMain();
     }
+});
+electron_updater_1.autoUpdater.on('checking-for-update', () => {
+});
+electron_updater_1.autoUpdater.on('update-available', (info) => {
+});
+electron_updater_1.autoUpdater.on('update-not-available', (info) => {
+});
+electron_updater_1.autoUpdater.on('error', (err) => {
+    console.log(err);
+});
+electron_updater_1.autoUpdater.on('update-downloaded', (info) => {
+    electron_updater_1.autoUpdater.quitAndInstall();
 });
 let server = (0, WebhookServer_1.runServer)(update);
 let serverStatus = server ? true : false;

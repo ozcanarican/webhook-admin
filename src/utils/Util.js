@@ -1,11 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.buildCommand = exports.deleteHook = exports.updateHook = exports.saveHook = exports.createNewHook = exports.randomID = exports.saveSettings = exports.getSettings = exports.createDefaultSettings = exports.mainFolder = void 0;
+exports.buildCommandJSON = exports.buildCommand = exports.deleteHook = exports.updateHook = exports.saveHook = exports.createNewHook = exports.randomID = exports.saveSettings = exports.getSettings = exports.createDefaultSettings = exports.openConfig = exports.mainFolder = void 0;
 const electron_1 = require("electron");
 const original_fs_1 = require("original-fs");
 const path = require('path');
-const configPath = path.join(electron_1.app.getPath('appData'), "Webhooks", "settings.json");
-exports.mainFolder = path.join(electron_1.app.getPath('appData'), "Webhooks");
+exports.mainFolder = path.join(electron_1.app.getPath('appData'), "Webhooks-Data");
+const configPath = path.join(exports.mainFolder, "settings.json");
+const openConfig = () => {
+    electron_1.shell.openPath(exports.mainFolder);
+};
+exports.openConfig = openConfig;
 const createDefaultSettings = () => {
     const defaultFile = require("./settings.json");
     if (!(0, original_fs_1.existsSync)(exports.mainFolder)) {
@@ -89,3 +93,12 @@ const buildCommand = (hook, url) => {
     return cmd;
 };
 exports.buildCommand = buildCommand;
+const buildCommandJSON = (hook, data) => {
+    let cmd = hook.command;
+    hook.variables.map((v) => {
+        cmd = data[v] ? cmd.replace(`$${v}`, data[v]) : cmd.replace(`$${v}`, "");
+    });
+    console.log("build command:", cmd);
+    return cmd;
+};
+exports.buildCommandJSON = buildCommandJSON;

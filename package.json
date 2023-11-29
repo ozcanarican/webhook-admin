@@ -5,7 +5,7 @@
   "description": "My Electron application description",
   "main": "src/index.js",
   "scripts": {
-    "start": "electron-forge start",
+    "start": "APP_DEV=true electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish2": "electron-forge publish",
@@ -13,6 +13,23 @@
     "delconfig": "rm -rf /home/ozcan/.config/Webhooks/settings.json",
     "publish": "electron-builder --win --publish always",
     "try": "electron-builder --win"
+  },
+  "build": {
+    "appId": "com.ozcanarican.webhooks",
+    "extraFiles": [
+      {
+        "from": "assets",
+        "to": "resources",
+        "filter": [
+            "**/*"
+        ]
+    }
+    ],
+    "productName": "Webhooks Admin",
+    "nsis": {
+      "artifactName": "webhooks-admin.${ext}",
+      "uninstallDisplayName": "Webhooks Admin"
+    }
   },
   "keywords": [],
   "author": {
