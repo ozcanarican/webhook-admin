@@ -3,6 +3,7 @@ linux-unpacked
 *.exe*
 *.snap*
 *.AppImage*
+snap.key
 
 # Logs
 logs
