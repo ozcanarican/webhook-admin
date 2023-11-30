@@ -135,6 +135,9 @@ if (passport) {
         }
         e.target.classList.add("hidden")
         document.body.innerHTML += '<div class="centered"><img src="./assets/loading.gif" alt=""></div>'
+        d.background = d.background ? true : false
+        d.needPassword = d.needPassword ? true : false
+        
         if(type == 0) {
             window.api.send("buildhook", d)
         } else {
@@ -147,6 +150,10 @@ if (passport) {
         console.log("hook",hook)
         let {elements} = document.getElementById("new-hook-form")
         for (const [ key, value ] of Object.entries(hook) ) {
+
+            if(key == "background" || key == "needPassword") {
+                document.getElementById(key).checked = value
+            }
             const field = elements.namedItem(key)
             field && (
                 field.value = key == "method" ? (value == "1" ? "POST": "GET") : value

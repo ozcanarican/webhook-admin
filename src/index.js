@@ -165,7 +165,7 @@ electron_1.app.on('ready', () => {
         let cmd = data.command;
         let reg = /\$\w*/g;
         let variables = (cmd.match(reg) || []).map(e => e.replace("$", ""));
-        let hook = Object.assign(Object.assign({}, data), { variables: variables ? variables : [], background: data.background == "on" ? true : false, needPassword: data.needPassword == "on" ? true : false, last: {}, method: WebhookType_1.WebhookMethod[data.method] });
+        let hook = Object.assign(Object.assign({}, data), { variables: variables ? variables : [], last: {}, method: WebhookType_1.WebhookMethod[data.method] });
         console.log(hook);
         (0, Util_1.updateHook)(hook);
         backToHook();

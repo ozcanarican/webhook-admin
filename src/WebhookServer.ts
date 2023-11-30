@@ -61,6 +61,8 @@ export const runServer = (update: Function) => {
                   found = true
                   return
                 }
+              } else {
+                runCommand(hook.command, hook, res, req, update)
               }
             })
           }
@@ -93,7 +95,7 @@ const runCommand = (cmd: string, hook: WebhookType, res: http.ServerResponse<htt
   let output = ""
   try {
     console.log("calistirilan:", cmd)
-    hook.background && exec(cmd)
+    hook.background && exec("start /min " + cmd)
     output = hook.background ? "Running in background" : execSync(cmd).toString()
     console.log(output)
     res.end(JSON.stringify({ name: hook.name, id: hook.id, command: hook.command, applied_command: cmd, variables: hook.variables, output }))
