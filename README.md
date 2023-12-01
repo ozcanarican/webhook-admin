@@ -41,3 +41,14 @@ We can send such json data as post parameter, we will create following command a
 ```
 ls -la /home/ozcan
 ```
+
+## Settings Up Server
+All data store in **settings.json** file. To browse the file location, you may click on **Server Status** value on main screen. It will automatically open the containing folder.
+
+## Background Commands
+To mark a webhook as **background** changes how will be executed. A standart webhook runs the command and waits for the terminal responses. However, when a command takes long time to execute, it may create long waiting time to cause problems.
+
+For such times, you may run the command as background task. You will start the command without waiting to finish.
+
+## Webhook Details
+To get more information about last execution of the webhook, you may click on the **last execution time** on the **Manage Hooks** window. The code template block will change and show you executer IP address and the result of the code.
