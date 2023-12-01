@@ -1,0 +1,61 @@
+{
+  "name": "webhook-admin",
+  "productName": "webhook-admin",
+  "version": "1.0.4",
+  "tag":"windows",
+  "description": "My Electron application description",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish2": "electron-forge publish",
+    "lint": "echo \"No linting configured\"",
+    "delconfig": "rm -rf /home/ozcan/.config/Webhooks/settings.json",
+    "publish": "electron-builder --win --publish always",
+    "try": "electron-builder --win"
+  },
+  "build": {
+    "appId": "com.ozcanarican.webhooks",
+    "publish": [
+      {
+        "provider": "github"
+      }
+    ],
+    "extraFiles": [
+      {
+        "from": "assets",
+        "to": "resources",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "productName": "Webhooks Admin",
+    "nsis": {
+      "artifactName": "webhooks-admin.${ext}",
+      "uninstallDisplayName": "Webhooks Admin"
+    }
+  },
+  "keywords": [],
+  "author": {
+    "name": "Özcan ARICAN",
+    "email": "me@ozcanarican.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "electron-is-dev": "^2.0.0",
+    "electron-reload": "^2.0.0-alpha.1",
+    "electron-squirrel-startup": "^1.0.0",
+    "electron-updater": "^6.1.7"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.1.0",
+    "@electron-forge/maker-deb": "^7.1.0",
+    "@electron-forge/maker-rpm": "^7.1.0",
+    "@electron-forge/maker-squirrel": "^7.1.0",
+    "@electron-forge/maker-zip": "^7.1.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.1.0",
+    "electron": "27.1.2"
+  }
+}
