@@ -1,7 +1,7 @@
 {
   "name": "webhook-admin",
   "productName": "webhook-admin",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "tag":"windows",
   "description": "My Electron application description",
   "main": "src/index.js",
